@@ -41,8 +41,7 @@ function getCities(event) {
 
 document
     .querySelector("select[name=uf]")
-    .addEventListener("change", getCities
-
+    .addEventListener("change", getCities)
 
 const itemsCollect = document.querySelector(".items-grid li")
 
