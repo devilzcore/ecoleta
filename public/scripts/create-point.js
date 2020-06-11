@@ -1,27 +1,27 @@
-function populationUFs() {
+function populateUFs() {
     const ufSelect = document.querySelector("select[name=uf]")
 
     fetch("https://servicodados.ibge.gov.br/api/v1/localidades/estados")
     .then( res => res.json() )
-    .then( data => {
+    .then( state => {
 
-        for( state of states) {
+        for( const state of states) {
             ufSelect.innerHTML += `<option value="${state.id}">${state.nome}</option>`
         }
     
     })
 }
 
-populationUFs()
+populateUFs()
 
 function getCities(event) {
     const citySelect = document.querySelector("select[name=city]")
-    const stateInput = document.querySelector("select[name=state]").text
+    const stateInput = document.querySelector("select[name=state]")
 
-    const ufValue= event.target.value
+    const ufValue = event.target.value
 
     const indexOfSelectedState = event.target.selectedIndex
-    stateInput.value = event.target.options[indexOfSelectedState]
+    stateInput.value = event.target.options[indexOfSelectedState].text
 
     const url = `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${ufValue}/municipios`
 
@@ -43,13 +43,13 @@ document
     .querySelector("select[name=uf]")
     .addEventListener("change", getCities)
 
-const itemsCollect = document.querySelector(".items-grid li")
+const itemsToCollect = document.querySelector(".items-grid li")
 
-for (const item of itemsCollect) {
+for (const item of itemsToCollect) {
     item.addEventListener("click", handleSelectedItem)
 }
 
-const itemsToCollect = document.querySelector("input[name=items]")
+const collectedItems = document.querySelector("input[name=items]")
 
 let selectedItems = []
 
@@ -61,17 +61,22 @@ function handleSelectedItem(event) {
 
     const itemId = itemLi.dataset.id
 
-    const alreadySelected = selectedItems.findIndex( item => item == itemId )
+    const alreadySelected = selectedItems.findIndex( item => {
+        const itemFound = item == itemId
+        return itemFound 
+    })
 
     if( alreadySelected >= 0 ) {
-        const filteredItems = selectedItems.filter(item => item != itemId )
+        const filteredItems = selectedItems.filter(item => {
+            const itemIsDifferent = item != itemId //
+            return itemIsDifferent 
+        })
 
         selectedItems = filteredItems
     } else {
-        selectedItems.push(itemId)
-
+        selectedItems.push(itemId)  
     } 
 
-    itemsToCollect.value = selectedItems
+    collectedItems.value = selectedItems
 }
 
